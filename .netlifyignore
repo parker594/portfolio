@@ -1,16 +1,20 @@
-# Ignore local development files
+# Ignore local development files that contain secrets
 email-server.js
 test-api.js
 test-email.json
 start-servers.bat
 
+# Ignore development and test files
+*.test.*
+*.spec.*
+
 # Ignore development dependencies
 node_modules/
+.env
 .env.local
 
 # Ignore build artifacts that shouldn't be in source
 dist/
-build/
 
 # Ignore editor files
 .vscode/
@@ -19,3 +23,7 @@ build/
 # Ignore OS files
 .DS_Store
 Thumbs.db
+
+# Ignore log files
+*.log
+npm-debug.log*

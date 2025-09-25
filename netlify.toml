@@ -2,8 +2,8 @@
   # Build command for Vite
   command = "npm run build"
   
-  # Directory with the static files
-  publish = "dist"
+  # Directory with the static files (Vite builds to 'build' not 'dist')
+  publish = "build"
   
   # Directory for Netlify Functions
   functions = "netlify/functions"
