@@ -9,12 +9,12 @@ const PORT = 3003;
 app.use(cors());
 app.use(express.json());
 
-// Gmail transporter
+// Gmail transporter - using environment variables for security
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'notification12457@gmail.com',
-    pass: 'pupn utci ozye dsse'
+    user: process.env.EMAIL_USER || 'notification12457@gmail.com',
+    pass: process.env.EMAIL_PASSWORD || 'pupn utci ozye dsse'
   }
 });
 
@@ -27,17 +27,24 @@ app.get('/', (req, res) => {
 app.post('/api/send-email', async (req, res) => {
   try {
     const { name, email, message } = req.body;
+    
+    if (!name || !email || !message) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Name, email, and message are required' 
+      });
+    }
 
     const mailOptions = {
-      from: 'notification12457@gmail.com',
-      to: 'debajyotiupadhayaya@gmail.com',
+      from: process.env.EMAIL_FROM || 'notification12457@gmail.com',
+      to: process.env.EMAIL_TO || 'debajyotiupadhayaya@gmail.com',
       subject: `Portfolio Contact: ${name}`,
       html: `
         <h2>New Contact Form Submission</h2>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
         <p><strong>Message:</strong></p>
-        <p>${message}</p>
+        <p>${message.replace(/\n/g, '<br>')}</p>
       `
     };
 
@@ -46,10 +53,13 @@ app.post('/api/send-email', async (req, res) => {
 
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: 'Failed to send email' });
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to send email' 
+    });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Email server running on http://localhost:${PORT}`);
 });

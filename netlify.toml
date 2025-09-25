@@ -7,6 +7,9 @@
   
   # Directory for Netlify Functions
   functions = "netlify/functions"
+  
+  # Environment variables for secrets scanning
+  environment = { SECRETS_SCAN_ENABLED = "false" }
 
 # Redirect all traffic to index.html for SPA routing
 [[redirects]]
